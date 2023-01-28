@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:debug
+    depends_on:
+      - 'postgres'
+    working_dir: /usr/src/app
+    env_file:
+      - .env
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+
+  postgres:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    container_name: 'postgres'
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+
+
+
+
+  adminer:
+    depends_on:
+      - postgres
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  pg-data:

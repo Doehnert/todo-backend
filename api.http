@@ -1,0 +1,67 @@
+### Todo API
+### Get all todo tasks
+GET http://localhost:3000/api/v1/todos
+
+###
+POST http://localhost:3000/api/v1/todos
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiODAyNDNjNy05ZGM3LTQxOTQtODQzYS1lNTM3OGJiOTJlYmMiLCJlbWFpbCI6ImVsdG9uZmRAZ21haWwuY29tIiwicm9sZXMiOiJ1c2VyIiwiaWF0IjoxNjc0NzQ1MTM0LCJleHAiOjE2NzQ3NTIzMzR9.BfiJHpTPjYRdKPEokiPF37RYDeAwBLc1EaO7lD7o8ok
+
+{
+  "task": "comer pizza",
+  "isDone": 1
+}
+
+###
+GET http://localhost:3000/api/v1/todos/f9ff94af-a125-4b1b-8383-1c1da51acb4a
+
+###
+PUT http://localhost:3000/api/v1/todos/f9ff94af-a125-4b1b-8383-1c1da51acb4a
+Content-Type: application/json
+
+{
+  "task": "Tarefa atualizada"
+}
+
+###
+DELETE http://localhost:3000/api/v1/todos/f9ff94af-a125-4b1b-8383-1c1da51acb4a
+
+
+### User section
+### Sign in a new user
+POST http://localhost:3000/auth/signup
+Content-Type: application/json
+
+{
+  "name": "elton",
+  "email": "eltonfd@gmail.com",
+  "password": "aie1176A*"
+}
+
+### Find a particular user
+GET http://localhost:3000/auth/72ed56fb-e85d-4571-b134-c25b948c0138
+
+### Find all users with a given email
+GET http://localhost:3000/auth?email=eltonfd@gmail.com
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiODAyNDNjNy05ZGM3LTQxOTQtODQzYS1lNTM3OGJiOTJlYmMiLCJlbWFpbCI6ImVsdG9uZmRAZ21haWwuY29tIiwicm9sZXMiOiJ1c2VyIiwiaWF0IjoxNjc0NzU1NTYwLCJleHAiOjE2NzQ3NjI3NjB9.cIZnflpn04_FwkGBjOx0aafZ1_9GS9CKueOLyCJko-0
+
+### Delete a particular user
+GET http://localhost:3000/auth/72ed56fb-e85d-4571-b134-c25b948c0138
+
+### Update a particular user
+PATCH http://localhost:3000/auth/72ed56fb-e85d-4571-b134-c25b948c0138
+Content-Type: application/json
+
+{
+  "email": "aaa@aaa.com"
+}
+
+### Auth section
+### Login
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "eltonfd@gmail.com",
+  "password": "aie1176A*"
+}
