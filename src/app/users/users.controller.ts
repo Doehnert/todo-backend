@@ -76,6 +76,25 @@ export class UsersController {
   }
 
   @UseInterceptors(ClassSerializerInterceptor)
+  @ApiOperation({
+    summary: 'Retrieve the users with a specific e-mail',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Get the users with some e-mail returned',
+    type: IndexUserSwagger,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'No user found with that e-mail',
+    type: NotFoundSwagger,
+  })
+  @Get('/email')
+  findOneByEmail(@Query('email') email: string) {
+    return this.userService.findOneByEmail(email);
+  }
+
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get('/:id')
   @ApiOperation({
     summary: 'Retrieve a specific user by his id',
@@ -91,31 +110,7 @@ export class UsersController {
     type: NotFoundSwagger,
   })
   findUser(@Param('id', new ParseUUIDPipe()) id: string) {
-    console.log(
-      '🚀 ~ file: users.controller.ts:81 ~ UsersController ~ findUser ~ id',
-      id,
-    );
     return this.userService.findOne(id);
-  }
-
-  @UseInterceptors(ClassSerializerInterceptor)
-  @ApiOperation({
-    summary: 'Retrieve all users with a specific e-mail',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'List of users with some e-mail returned',
-    type: IndexUserSwagger,
-    isArray: true,
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'No user found with that e-mail',
-    type: NotFoundSwagger,
-  })
-  @Get('/email')
-  findAllUsersWithEmail(@Query('email') email: string) {
-    return this.userService.find(email);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)

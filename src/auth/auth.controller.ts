@@ -1,18 +1,12 @@
 import { Controller, HttpStatus, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import {
-  ApiBody,
-  ApiOperation,
-  ApiParam,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { BadRequestSwagger } from 'src/helpers/swagger/bad-request.swagger';
 import { AuthService } from './auth.service';
 import { LoginUserDto } from './dto/login-user.dto';
 
-@Controller('api/auth')
+@Controller('api/v1/auth')
 @ApiTags('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -32,7 +26,7 @@ export class AuthController {
   })
   @ApiBody({ type: LoginUserDto })
   @Post('login')
-  async login(@Req() req: Request) {
-    return await this.authService.login(req.user);
+  login(@Req() req: Request) {
+    return this.authService.login(req.user);
   }
 }

@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -11,10 +15,10 @@ export class UsersService {
   ) {}
 
   async create(email: string, password: string) {
-    const existingUser = await this.find(email);
+    const existingUser = await this.findOneByEmail(email);
 
-    if (existingUser.length)
-      throw new NotFoundException('User with this e-mail already exists');
+    if (existingUser)
+      throw new BadRequestException('User with this e-mail already exists');
     const user = this.userRepo.create({ email, password });
 
     return this.userRepo.save(user);
@@ -44,40 +48,20 @@ export class UsersService {
     }
   }
 
-  find(email: string) {
-    try {
-      return this.userRepo.find({
-        where: {
-          email,
-        },
-      });
-    } catch (error) {
-      throw new NotFoundException(error.message);
-    }
-  }
-
   findAll() {
-    try {
-      return this.userRepo.find();
-    } catch (error) {
-      throw new NotFoundException(error.message);
-    }
+    return this.userRepo.find();
   }
 
   async update(id: string, attrs: UpdateUserDto) {
     const user = await this.findOne(id);
-    console.log(
-      '🚀 ~ file: users.service.ts:45 ~ UsersService ~ update ~ id',
-      id,
-    );
 
     Object.assign(user, attrs);
     return this.userRepo.save(user);
   }
 
   async remove(id: string) {
-    const user = await this.findOne(id);
+    await this.findOne(id);
 
-    return this.userRepo.softDelete(id);
+    await this.userRepo.softDelete(id);
   }
 }

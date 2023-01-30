@@ -19,7 +19,7 @@ const user: User = {
   deletedAt: null,
   updatedAt: null,
   todos: null,
-  hashPassword: null,
+  // hashPassword: null,
 };
 
 const todoEntityList: TodoEntity[] = [

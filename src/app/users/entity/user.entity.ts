@@ -25,11 +25,7 @@ export class User {
     type: 'date',
     nullable: true,
   })
-  birthDate: Date | null;
-
-  @ApiProperty()
-  @Column({ nullable: true })
-  company: string;
+  birthDate?: Date | null;
 
   @Column({ unique: true })
   @ApiProperty()
@@ -63,5 +59,16 @@ export class User {
   @BeforeInsert()
   hashPassword?() {
     this.password = hashSync(this.password, 12);
+  }
+
+  constructor(user?: Partial<User>) {
+    this.id = user?.id;
+    this.birthDate = user?.birthDate;
+    this.createdAt = user?.createdAt;
+    this.deletedAt = user?.deletedAt;
+    this.updatedAt = user?.updatedAt;
+    this.email = user?.email;
+    this.roles = user?.roles;
+    this.todos = user?.todos;
   }
 }
