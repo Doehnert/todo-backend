@@ -3,9 +3,18 @@ import { config } from 'dotenv';
 
 config();
 
+console.log(process.env.NODE_ENV);
+
 export const dataSourceOptions: DataSourceOptions = {
+  host:
+    process.env.NODE_ENV === 'development'
+      ? process.env.DB_HOST
+      : '/cloudsql/soy-serenity-368016:southamerica-east1:postgres',
   type: 'postgres',
-  host: process.env.DB_HOST,
+  extra: {
+    socketPath: '/cloudsql/soy-serenity-368016:southamerica-east1:postgres',
+  },
+  migrationsRun: true,
   port: Number(process.env.DB_PORT),
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
