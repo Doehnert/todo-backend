@@ -6,6 +6,8 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.enableCors();
+
   const config = new DocumentBuilder()
     .addBearerAuth()
     .setTitle('TodoAPP API')
@@ -14,7 +16,7 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
 
-  const port = process.env.PORT || 3000;
+  const port = process.env.PORT || 8080;
 
   SwaggerModule.setup('swagger', app, document);
 
@@ -24,6 +26,6 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
-  await app.listen(port);
+  await app.listen(Number(port));
 }
 bootstrap();
