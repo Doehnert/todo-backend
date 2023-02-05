@@ -17,7 +17,7 @@ services:
       - .env
     restart: unless-stopped
     ports:
-      - 3000:3000
+      - 5051:5051
 
   postgres:
     image: postgres:latest
@@ -42,7 +42,7 @@ services:
     image: adminer
     restart: always
     ports:
-      - 8080:8080
+      - 3000:3000
 
 volumes:
   pg-data:
