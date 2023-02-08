@@ -3,6 +3,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Role } from 'src/auth/roles/role.enum';
 import { Repository } from 'typeorm';
+import { HistoryEntity } from '../history/entities/history.entity';
+import { HistoryService } from '../history/history.service';
 import { User } from '../users/entity/user.entity';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
@@ -19,7 +21,6 @@ const user: User = {
   deletedAt: null,
   updatedAt: null,
   todos: null,
-  // hashPassword: null,
 };
 
 const todoEntityList: TodoEntity[] = [
@@ -27,6 +28,12 @@ const todoEntityList: TodoEntity[] = [
   new TodoEntity({ task: 'task-2', isDone: 0, user }),
   new TodoEntity({ task: 'task-3', isDone: 0, user }),
 ];
+
+const hist: Partial<HistoryEntity> = {
+  id: 'hist-id',
+  isDone: 1,
+  isTranslated: true,
+};
 
 const updatedTodoEntityItem = new TodoEntity({ task: 'task-1', isDone: 1 });
 
@@ -47,6 +54,12 @@ describe('TodoService', () => {
             merge: jest.fn().mockReturnValue(updatedTodoEntityItem),
             save: jest.fn().mockResolvedValue(todoEntityList[0]),
             softDelete: jest.fn().mockReturnValue(undefined),
+          },
+        },
+        {
+          provide: HistoryService,
+          useValue: {
+            create: jest.fn().mockReturnValue(hist),
           },
         },
       ],

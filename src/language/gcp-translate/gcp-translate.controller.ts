@@ -2,7 +2,7 @@ import {
   DetectResult,
   LanguageResult,
 } from '@google-cloud/translate/build/src/v2';
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { DetectDto } from './dto/detect.dto';
 import { LanguagesDto } from './dto/languages.dto';
 import { TranslateDto } from './dto/translate.dto';
@@ -18,6 +18,7 @@ export class GcpTranslateController {
     @Body() translateDto: TranslateDto,
   ): Promise<TranslationResponseDto> {
     return this.gcpTranslateService.translate(
+      translateDto.todoId,
       translateDto.text,
       translateDto.to,
     );

@@ -29,6 +29,9 @@ export class UsersService {
       where: {
         id,
       },
+      relations: {
+        todos: true,
+      },
     });
 
     if (!user) throw new NotFoundException('User not found');

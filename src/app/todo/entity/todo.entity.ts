@@ -1,11 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { HistoryEntity } from 'src/app/history/entities/history.entity';
 import { User } from 'src/app/users/entity/user.entity';
 import {
+  AfterInsert,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -38,6 +41,9 @@ export class TodoEntity {
 
   @ManyToOne(() => User, (user) => user.todos)
   user: User;
+
+  @OneToMany(() => HistoryEntity, (history) => history.todo, { eager: true })
+  histories?: HistoryEntity[];
 
   constructor(todo?: Partial<TodoEntity>) {
     this.id = todo?.id;

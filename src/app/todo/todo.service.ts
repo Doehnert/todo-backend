@@ -10,12 +10,14 @@ import { UpdateTodoDto } from './dto/update-todo.dto';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { User } from '../users/entity/user.entity';
 import { Role } from 'src/auth/roles/role.enum';
+import { HistoryService } from '../history/history.service';
 
 @Injectable()
 export class TodoService {
   constructor(
     @InjectRepository(TodoEntity)
     private readonly todoRepository: Repository<TodoEntity>,
+    private readonly historyService: HistoryService,
   ) {}
 
   async findAll() {
@@ -45,7 +47,17 @@ export class TodoService {
   async create(todoDto: CreateTodoDto, user: User) {
     const todo = this.todoRepository.create(todoDto);
     todo.user = user;
-    return await this.todoRepository.save(todo);
+
+    const todoRes = await this.todoRepository.save(todo);
+    this.historyService.create(
+      {
+        isDone: todo.isDone,
+        task: todo.task,
+      },
+      todoRes,
+    );
+
+    return todoRes;
   }
 
   async update(id: string, attrs: UpdateTodoDto, user: User) {
@@ -59,7 +71,15 @@ export class TodoService {
     }
 
     Object.assign(todo, attrs);
-    return await this.todoRepository.save(todo);
+    const todoRes = await this.todoRepository.save(todo);
+    this.historyService.create(
+      {
+        isDone: todo.isDone,
+        task: todo.task,
+      },
+      todoRes,
+    );
+    return todoRes;
   }
 
   async deleteById(id: string) {
