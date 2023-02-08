@@ -30,10 +30,15 @@ export class GcpTranslateService {
       );
     }
 
-    const translateClient = new v2.Translate({
-      projectId: CONFIG.googleCloud.projectId,
-      keyFilename: './gcp-credential.json',
-    });
+    let translateClient;
+    if (process.env.NODE_ENV === 'development') {
+      translateClient = new v2.Translate({
+        projectId: CONFIG.googleCloud.projectId,
+        keyFilename: './gcp-credential.json',
+      });
+    } else {
+      translateClient = new v2.Translate();
+    }
 
     let translation;
     try {
@@ -45,10 +50,7 @@ export class GcpTranslateService {
   }
 
   async detect(text: string): Promise<DetectResult> {
-    const translateClient = new v2.Translate({
-      projectId: CONFIG.googleCloud.projectId,
-      keyFilename: './gcp-credential.json',
-    });
+    const translateClient = new v2.Translate();
     const [detections] = await translateClient.detect(text);
 
     return detections;

@@ -6,7 +6,6 @@ Backend for a todo-app with swagger documentation and tests
 ## Installation
 
 ```bash
-$ docker compose up
 ```
 
 ## Running the app
