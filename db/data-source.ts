@@ -1,6 +1,6 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { config } from 'dotenv';
-import accessSecret from '../src/helpers/secret-manager';
+import { accessSecret } from '../src/helpers/secret-manager';
 
 config();
 
