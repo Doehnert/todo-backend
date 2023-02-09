@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Role } from 'src/auth/roles/role.enum';
 import { Repository } from 'typeorm';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entity/user.entity';
@@ -59,6 +60,35 @@ export class UsersService {
     const user = await this.findOne(id);
 
     Object.assign(user, attrs);
+    return this.userRepo.save(user);
+  }
+
+  async toggleRole(userId: string) {
+    const user = await this.findOne(userId);
+    console.log(
+      '🚀 ~ file: users.service.ts:68 ~ UsersService ~ toggleRole ~ user',
+      user,
+    );
+
+    let newRole: UpdateUserDto;
+    console.log(
+      '🚀 ~ file: users.service.ts:75 ~ UsersService ~ toggleRole ~ user.roles',
+      user.roles,
+    );
+    if (user.roles === Role.Admin) {
+      newRole = {
+        roles: Role.User,
+      };
+    } else {
+      newRole = {
+        roles: Role.Admin,
+      };
+    }
+    Object.assign(user, newRole);
+    console.log(
+      '🚀 ~ file: users.service.ts:80 ~ UsersService ~ toggleRole ~ user',
+      user,
+    );
     return this.userRepo.save(user);
   }
 

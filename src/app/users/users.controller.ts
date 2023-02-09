@@ -160,4 +160,15 @@ export class UsersController {
   ) {
     return this.userService.update(id, body);
   }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(Role.Admin)
+  @ApiSecurity('bearer')
+  @ApiOperation({
+    summary: 'Toggle a user between admin and user roles',
+  })
+  @Get('/toggle/:id')
+  toggleUser(@Param('id', new ParseUUIDPipe()) id: string) {
+    return this.userService.toggleRole(id);
+  }
 }
