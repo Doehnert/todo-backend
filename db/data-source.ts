@@ -17,9 +17,9 @@ export const dataSourceOptions: DataSourceOptions = {
   port: process.env.DB_PORT
     ? Number(process.env.DB_PORT)
     : Number(accessSecret('DB_PORT')),
-  username: process.env.DB_USERNAME ?? accessSecret('DB_USERNAME'),
-  password: process.env.DB_PASSWORD ?? accessSecret('DB_PASSWORD'),
-  database: process.env.DB_DATABASE ?? accessSecret('DB_DATABASE'),
+  username: process.env.DB_USERNAME ?? accessSecret('DB_USERNAME').toString(),
+  password: process.env.DB_PASSWORD ?? accessSecret('DB_PASSWORD').toString(),
+  database: process.env.DB_DATABASE ?? accessSecret('DB_DATABASE').toString(),
   entities: ['dist/**/*.entity.js'],
   migrations: ['dist/db/migrations/*.js'],
 };
