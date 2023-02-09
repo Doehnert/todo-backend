@@ -8,6 +8,9 @@ import { AuthController } from './auth.controller';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { RolesGuard } from './guards/roles.guard';
+import { accessSecret } from 'src/helpers/secret-manager';
+
+const key = process.env.JWT_SECRET_KEY ?? accessSecret('JWT_SECRET_KEY');
 
 @Module({
   imports: [
@@ -15,7 +18,7 @@ import { RolesGuard } from './guards/roles.guard';
     UsersModule,
     PassportModule,
     JwtModule.register({
-      privateKey: process.env.JWT_SECRET_KEY,
+      privateKey: key.toString(),
       signOptions: { expiresIn: '2h' },
     }),
   ],
